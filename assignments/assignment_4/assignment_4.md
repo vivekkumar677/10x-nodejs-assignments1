@@ -1,6 +1,6 @@
 # Add PUT and DELETE routes in previous assignments
 
-## This is an extension on assignment 3, now use a database to store the users, and create routes to edit and delete a user
+# This is an extension on assignment 3, now use a database to store the users, and create routes to edit and delete a user
 
 <br />
 

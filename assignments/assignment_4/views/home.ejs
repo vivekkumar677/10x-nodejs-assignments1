@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+    </style>
+    <link href="/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <table style="width: 100%">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>City</th>
+        <th>Profession</th>
+        <th>Select</th>
+        <th>Delete</th>
+      </tr>
+      <% users.forEach(user => {%>
+      <% if(user.selected){ %>
+        <tr class = "selected">
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.age %></td>
+          <td><%= user.city %></td>
+          <td><%= user.profession %></td>
+          <td>
+            <form method = "POST" action = "/edit/<%= user._id %>/user?_method=PUT">
+            </form>
+          </td>
+          <td>
+            <form method = "POST" action = "/delete/<%= user._id %>/user?_method=DELETE">
+              <button>Delete</button>
+            </form>
+          </td>
+        </tr>
+      <%} else {%>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td><%= user.age %></td>
+          <td><%= user.city %></td>
+          <td><%= user.profession %></td>
+          <td>
+            <form method = "POST" action = "/edit/<%= user._id %>/user?_method=PUT">
+              <button>Select</button>
+            </form>
+          </td>
+          <td>
+            <form method = "POST" action = "/delete/<%= user._id %>/user?_method=DELETE">
+              <button>Delete</button>
+            </form>
+          </td>
+        </tr>
+      <%}%>
+      <% })%>
+    </table>
+    <div>
+      <a href="/form">Add user</a>
+    </div>
+  </body>
+</html>

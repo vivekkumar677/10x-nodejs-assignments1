@@ -1,46 +1,138 @@
+const { range } = require('express/lib/request');
+const mongoose=require('mongoose')
+const express =require('express')
+const res = require('express/lib/response')
+const path=require('path');
 
-const express = require("express");
-const bodyparser = require("body-parser");
-const faker = require("faker");
-const mogoose = require("mongoose");
-const User = require("./model/user");
-var methodOverride = require('method-override')
-const app = express();
+let app=express()
 
-mogoose.connect("mongodb://localhost:27017/users");
-app.use(bodyparser());
+app.set('view engine', 'ejs')
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'))
+app.use(express.urlencoded({
+    extended: true
+})) 
 
-app.use(express.static("public"));
-app.use(methodOverride('_method'));
-
-app.set('views', './views');
-app.set('view engine', 'ejs');
-
-app.get("/", async (req, res) =>{
-    const users = await User.find();
-    console.log(users);
-    res.render("home.ejs", {users});
+mongoose.connect("mongodb://localhost:27017/users")
+.then(()=>console.log("connection created"))
+.catch((err)=>{
+    console.log(err)
 });
 
-app.get("/form", (req, res) =>{
-    res.render("form.ejs");
-});
+app.use(express.static(__dirname + '/public'));
 
-app.post("/add/user", async (req, res) =>{
-    //Create records in database
-    await User.create(req.body);
-    res.redirect("/");
-});
 
-app.put("/edit/:id/user", async (req, res) =>{
-    console.log("I am in edit");
-    await User.updateOne({_id: req.params.id}, {selected: true});
-    res.redirect("/");
-});
+const mySchema3=new mongoose.Schema({
+    name:{
+        type:"string",
+        required: true,
 
-app.delete("/delete/:id/user", async (req, res) =>{
-    console.log("I am in delete");
-    await User.deleteOne({_id: req.params.id});
-    res.redirect("/");
+    },
+    email:{
+        type:"string",
+        required: true,
+
+
+    },
+    isPromoted:{
+        type:"string",
+        default:null
+    }
 })
-app.listen(3000, ()=> console.log("Server is running"));
+
+const myCollection=new mongoose.model("User",mySchema3);
+const getDocsOfUser = async () => {
+    try {
+        const Docs = await myCollection.find();
+        return Docs
+    } catch (err) {
+        console.log(err);
+    };
+}
+
+app.get('/', (req, res) => {
+    getDocsOfUser().then((data) => {
+        console.log(data)
+        res.render('home.ejs', { data: data });
+    })
+})
+const insertDocToUser = async (doc) => {
+    try {
+        const Docs = new myCollection(doc);
+        const res = await Docs.save()
+
+    } catch (err) {
+        console.log(err);
+    };
+}
+app.post('/users/add',(req,res)=>{
+
+    const obj={
+        name: req.body.name,
+        email: req.body.email,
+        isPromoted:req.body.isPromoted
+    }
+    console.log(obj)
+
+    insertDocToUser(obj)
+    getDocsOfUser().then((data) => {
+        res.redirect("/")
+    })
+} );
+const updateDocofUser = async (_id) => {
+    try {
+       myCollection.findOne({ _id: _id }, { isPromoted: 1 }).then((data)=>{
+            prevVal=data.isPromoted
+            if(prevVal=="true"){
+                prevVal="false"
+            }
+            else{
+                prevVal="true"
+            }
+            myCollection.findByIdAndUpdate(_id,{isPromoted:prevVal},{new:true}).then(res=>{
+                console.log(res);
+            });
+
+       });
+
+
+    } catch (err) { console.log(err) }
+}
+
+
+app.put("/users/:_id",(req,res)=>{
+    updateDocofUser(req.params._id);
+    getDocsOfUser().then((data) => {
+        res.redirect('/');
+    })
+});
+
+
+const deleteDocofUser= async (_id) =>{
+    myCollection.findByIdAndDelete(_id).then((data) => {
+        console.log(data)
+    }).catch((err) => {
+        console.log(err);
+    })
+};
+app.delete("/users/:_id",(req, res)=>{
+    deleteDocofUser(req.params._id).then((data) => {
+        res.redirect('/');
+    })
+})
+
+
+app.get('/form',(req,res)=>{
+
+    res.render('form.ejs')
+})
+app.get('/', (req, res) => {
+    getDocsOfUser().then((data) => {
+        res.render('views/homepage.ejs', { data: data });
+    })
+})
+
+
+app.listen(3000, () => {
+    console.log("Port 3000 is listening");
+}) 

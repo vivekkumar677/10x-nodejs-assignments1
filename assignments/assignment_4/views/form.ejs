@@ -1,22 +1,44 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <form action="/add/user" method = "POST" >
-      <label for="name">Name :</label><br />
-      <input type="text" id="name" name="name" value="" /><br />
-      <label for="email">Email :</label><br />
-      <input type="text" id="email" name="email" value="" /><br />
-      <label for="age">Age :</label><br />
-      <input type="text" id="age" name="age" value="" /><br />
-      <label for="city">City :</label><br />
-      <input type="text" id="city" name="city" value="" /><br />
-      <label for="profession">Profession :</label><br />
-      <input type="text" id="profession" name="profession" value="" /><br /><br />
-      <input type="submit" value="Submit" />
-    </form>
-    <p>
-      If you click the "Submit" button, the form-data will be sent to a page
-      called "/action_page.php".
-    </p>
-  </body>
-</html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pushster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+
+    <div class="container">
+        <h1>Register form</h1>
+        <form action="/users/add" method="post">
+            <label for="Name">Name:</label><br>
+            <input class="input" type="text" id="Name" name="name"  required><br>
+            <label for="Mail">Mail:</label><br>
+            <input  class="input" type="email" id="Mail" name="email" required ><br><br>
+
+            <select class="selectpicker" data-style="btn-info" name="isPromoted">
+                <optgroup label="Select Table">
+                    <option name="" value="Null">Null</option>
+                    <option name="table1" value="true">true</option>
+                    <option name="table2" value="false">false</option>
+
+                </optgroup>
+            </select>
+
+
+            <input type="submit" class="submit" value="Submit">
+        </form>
+    </div>
+
+</body>
+
+</html> 

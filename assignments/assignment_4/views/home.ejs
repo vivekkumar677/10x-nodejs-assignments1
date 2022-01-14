@@ -1,67 +1,51 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <style>
-      table,
-      th,
-      td {
-        border: 1px solid black;
-      }
-    </style>
-    <link href="/style.css" rel="stylesheet" />
-  </head>
-  <body>
-    <table style="width: 100%">
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Age</th>
-        <th>City</th>
-        <th>Profession</th>
-        <th>Select</th>
-        <th>Delete</th>
-      </tr>
-      <% users.forEach(user => {%>
-      <% if(user.selected){ %>
-        <tr class = "selected">
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.age %></td>
-          <td><%= user.city %></td>
-          <td><%= user.profession %></td>
-          <td>
-            <form method = "POST" action = "/edit/<%= user._id %>/user?_method=PUT">
-            </form>
-          </td>
-          <td>
-            <form method = "POST" action = "/delete/<%= user._id %>/user?_method=DELETE">
-              <button>Delete</button>
-            </form>
-          </td>
-        </tr>
-      <%} else {%>
-        <tr>
-          <td><%= user.name %></td>
-          <td><%= user.email %></td>
-          <td><%= user.age %></td>
-          <td><%= user.city %></td>
-          <td><%= user.profession %></td>
-          <td>
-            <form method = "POST" action = "/edit/<%= user._id %>/user?_method=PUT">
-              <button>Select</button>
-            </form>
-          </td>
-          <td>
-            <form method = "POST" action = "/delete/<%= user._id %>/user?_method=DELETE">
-              <button>Delete</button>
-            </form>
-          </td>
-        </tr>
-      <%}%>
-      <% })%>
-    </table>
-    <div>
-      <a href="/form">Add user</a>
-    </div>
-  </body>
-</html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+</head>
+
+<body>
+    <section class="mainContent">
+        <div class="nav">
+            <h1>All Registered</h1>
+            <button type="button" onclick="location.href='/form' ">Add User</button>
+        </div>
+        <div class="UsersContainer">
+            <%if(data.length> 0){ data.forEach((user)=>{%>
+                <div class="card <%= user.isPromoted%>">
+                    <h2><i class="fas fa-user-tie"></i> <span>
+                            <%= user.name %>
+                        </span></h2>
+                    <h2><i class="fas fa-envelope"></i> <span>
+                            <%= user.email %>
+                        </span></h3>
+                    <% let promote="Demote" %>
+                        <% if(user.isPromoted!="true" ){promote="Promote" }%>
+                            <div class="form">
+                                <form method="POST" action="/users/<%= user._id %>?_method=PUT">
+                                    <button class="edit" id="edit-<%= user.name %>" type="submit">
+                                        <%= promote %>
+                                    </button>
+                                </form>
+                                <form method="POST" action="/users/<%= user._id %>?_method=DELETE">
+                                    <button class="delete" id="delete-<%= user.name %>">Delete</button>
+                                </form>
+                            </div>
+                </div>
+                <%});}else{%>
+                    <div class="empty-page">
+                    <h1>No users are added yet</h1>
+                    </div>
+                    <%}%>
+        </div>
+    </section>
+</body>
+
+</html> 

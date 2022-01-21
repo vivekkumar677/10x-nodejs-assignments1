@@ -1,0 +1,22 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "nodejs app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "http",
+    "server"
+  ],
+  "author": "Vivek",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "faker": "^6.6.6",
+    "nodemon": "^2.0.15"
+  }
+}

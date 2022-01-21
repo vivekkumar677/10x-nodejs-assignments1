@@ -1,3 +1,5 @@
+// WorkingWithUserInputs
+
 const process = require("process");
 function getNameFromCommandLine() {
     // Write you code here, name should be taken as args in process.argv
@@ -29,3 +31,4 @@ module.exports = {
     getNameFromEnv,
     getNameFromReadLine
 }
+

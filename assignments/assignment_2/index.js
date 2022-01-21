@@ -1,3 +1,5 @@
+// Serving the file using http server
+
 const fs=require("fs");
 const http = require("http")
 
